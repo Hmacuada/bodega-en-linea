@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingresar – Manual de Operaciones de Bodega</title>
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link rel="stylesheet" href="entrada.css">
+</head>
+<body>
+  <main class="login">
+    <aside class="lside">
+      <img class="logo" src="img/logo.png" alt="Cerro del Cobre – Operaciones mineras">
+      <div class="msg">
+        <h1>Manual de Operaciones de Bodega</h1>
+        <p>Accede a los procedimientos, la normativa vigente, los formatos y tu entrenamiento.</p>
+        <ul><li>Procedimientos paso a paso con esquemas</li><li>Normativa chilena aplicable a la bodega</li><li>Formatos imprimibles y evaluaciones</li><li>Tu progreso guardado en tu usuario</li></ul>
+      </div>
+      <div class="slog">Trabajamos seguros, operamos mejor.</div>
+    </aside>
+    <section class="lform">
+      <form class="box" id="f" autocomplete="on" novalidate>
+        <img class="mini" src="img/logo.png" alt="Cerro del Cobre">
+        <h2>Bienvenido</h2>
+        <p class="sub">Ingresa con tu usuario para continuar.</p>
+        <div class="err" id="err" role="alert"></div>
+        <div class="info" id="info"></div>
+        <label class="field"><span>Usuario</span><div class="inp"><i>👤</i><input id="u" name="usuario" autocomplete="username" placeholder="Tu usuario" autofocus required></div></label>
+        <label class="field"><span>Contraseña</span><div class="inp"><i>🔒</i><input id="p" name="clave" type="password" autocomplete="current-password" placeholder="Tu contraseña" required><button type="button" id="eye" aria-label="Mostrar contraseña">👁</button></div></label>
+        <div class="row"><label><input type="checkbox" id="rec"> Recordarme 7 días en este equipo</label><a id="olv">¿Olvidaste tu contraseña?</a></div>
+        <button class="btn p" id="go" type="submit">Ingresar</button>
+        <a class="back" href="portada.html">← Volver a la portada</a>
+        <p class="note">Acceso de demostración: el control de acceso se realiza en el navegador. Para uso con información sensible se requiere un servidor de autenticación.</p>
+      </form>
+    </section>
+  </main>
+  <script src="auth.js"></script>
+  <script src="usuarios.js"></script>
+  <script>
+    const $ = id => document.getElementById(id), err = $("err"), info = $("info");
+    if (Auth.get()) location.replace("index.html");
+    $("eye").onclick = () => { const t = $("p").type === "password"; $("p").type = t ? "text" : "password"; $("eye").textContent = t ? "🙈" : "👁"; };
+    $("olv").onclick = () => { info.textContent = "Solicita el restablecimiento de tu contraseña al administrador del manual o a tu supervisor."; info.classList.add("on"); };
+    function aviso() { const w = Auth.lockedFor(); if (w) { err.textContent = `Demasiados intentos. Espera ${w} segundos.`; err.classList.add("on"); $("go").disabled = true; setTimeout(() => { $("go").disabled = false; err.classList.remove("on"); }, w * 1000); } }
+    aviso();
+    $("f").addEventListener("submit", async e => {
+      e.preventDefault(); err.classList.remove("on");
+      if (!$("u").value.trim() || !$("p").value) { err.textContent = "Ingresa tu usuario y contraseña."; err.classList.add("on"); return; }
+      $("go").disabled = true; $("go").textContent = "Verificando…";
+      const r = await Auth.login($("u").value, $("p").value, $("rec").checked);
+      if (r.ok) { location.replace("index.html"); return; }
+      err.textContent = r.error; err.classList.add("on"); $("p").value = ""; $("p").focus();
+      $("go").textContent = "Ingresar"; $("go").disabled = false; aviso();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual de Operaciones de Bodega – Cerro del Cobre</title>
+  <meta name="description" content="Procedimientos, normativa chilena vigente, formatos y entrenamiento para la administración de bodega e inventario.">
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link rel="stylesheet" href="entrada.css">
+</head>
+<body>
+  <header class="cover">
+    <div class="gridbg"></div>
+    <nav class="pnav">
+      <img src="img/logo.png" alt="Cerro del Cobre – Operaciones mineras">
+      <div class="links"><a href="#incluye">Qué incluye</a><a href="#secciones">Secciones</a><a class="btn g" id="navCta" href="login.html">Ingresar</a></div>
+    </nav>
+    <div class="hx">
+      <div>
+        <span class="eyebrow">MANUAL OPERACIONAL · 2026</span>
+        <h1>Manual de operaciones de bodega</h1>
+        <p class="lead">Procedimientos claros, normativa chilena vigente y entrenamiento para operar la bodega de forma segura, trazable y eficiente.</p>
+        <div class="cta"><a class="btn p" id="heroCta" href="login.html">Ingresar al manual →</a><a class="btn g" href="#incluye">Ver qué incluye</a></div>
+        <div class="kpis">
+          <div><b id="nProc">49</b><span>procedimientos</span></div>
+          <div><b id="nSec">8</b><span>secciones</span></div>
+          <div><b id="nQuiz">9</b><span>evaluaciones</span></div>
+        </div>
+      </div>
+      <div class="shot"><img src="img/bodega.jpg" alt="Bodega con racks y grúa horquilla"></div>
+    </div>
+    <svg class="mt" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 130V74L170 30L330 84L520 20L700 86L900 34L1100 88L1290 40L1440 80V130Z" fill="#c8702a" opacity=".38"/>
+      <path d="M0 130V96L230 58L420 100L650 54L860 102L1090 66L1280 100L1440 74V130Z" fill="#143a7e" opacity=".9"/>
+      <path d="M0 130V114L260 86L470 116L700 84L930 118L1160 92L1440 112V130Z" fill="#eef3fa"/>
+    </svg>
+  </header>
+
+  <section class="wrap" id="incluye">
+    <div class="head"><small>QUÉ INCLUYE</small><h2>Todo lo que necesitas, en un solo lugar</h2><p>Desde el ingreso del material hasta su despacho, con seguridad y control de inventario.</p></div>
+    <div class="feat">
+      <div><i style="background:#e8effd">📖</i><h3>Procedimientos detallados</h3><p>Pasos explicados, ejemplos prácticos, controles y errores comunes.</p></div>
+      <div><i style="background:#e6f4ea">⚖️</i><h3>Seguridad y normativa</h3><p>Ley 20.949, DS 43, DS 594 y DS 132, resumidas y fáciles de consultar.</p></div>
+      <div><i style="background:#f3e8ff">🖨️</i><h3>Formatos imprimibles</h3><p>Vale de salida, acta de discrepancia, check list de equipos y más.</p></div>
+      <div><i style="background:#fdf0d5">🎓</i><h3>Entrenamiento</h3><p>Módulo interactivo de EPP y una evaluación por cada sección.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="secciones">
+    <div class="head"><small>CONTENIDO</small><h2>Las 8 secciones del manual</h2><p>Cada una reúne sus procedimientos, esquemas y evaluación.</p></div>
+    <div class="secs8" id="secs"></div>
+  </section>
+
+  <section class="wrap last">
+    <div class="band"><div><h2>¿Listo para empezar?</h2><p>Ingresa con tu usuario y guarda tu avance en el manual.</p></div><a class="btn p" id="bandCta" href="login.html">Ingresar →</a></div>
+  </section>
+
+  <footer class="pfoot">Cerro del Cobre · Operaciones mineras · Los complementos normativos deben verificarse en leychile.cl</footer>
+
+  <script src="auth.js"></script>
+  <script src="usuarios.js"></script>
+  <script src="../data.js"></script>
+  <script src="../data2.js"></script>
+  <script>
+    const M = window.MANUAL, s = Auth.get(), $ = id => document.getElementById(id);
+    $("nProc").textContent = M.procedimientos.length;
+    $("nSec").textContent = M.secciones.length;
+    $("nQuiz").textContent = Object.keys(M.quizzes).length;
+    $("secs").innerHTML = M.secciones.map(x =>
+      `<div><b style="background:${x.color}">${x.n}</b><span><strong>${x.titulo}</strong><small>${x.desc}</small></span><img src="img/s${x.n}.png" alt=""></div>`).join("");
+    if (s) ["navCta", "heroCta", "bandCta"].forEach(id => { const a = $(id); a.href = "index.html"; a.textContent = id === "navCta" ? "Ir al manual" : "Ir al manual →"; });
+  </script>
+</body>
+</html>
